@@ -8,7 +8,7 @@ from random import randint
 
 
 
-bg = pygame.image.load("/home/bis/Documents/expythonperso/test.jpg")
+bg = pygame.image.load("/home/bis/Documents/repository/python-snakegame/test.jpg")
 
 
 score = 0 
@@ -28,9 +28,6 @@ class Bomb:
         self.block = Block(x, y)
         
         
-      
-       
-    
     def draw_bomb(self):
          rect = pygame.Rect(self.block.x *CELL_SIZE,self.block.y * CELL_SIZE,CELL_SIZE,CELL_SIZE)
          pygame.draw.rect(screen,(255,0,90),rect) 
@@ -105,7 +102,7 @@ class Snake:
         score = 0 
         global tick
         tick = 300
-       
+        pygame.time.set_timer(SCREEN_UPDATE,300)
 
 
 
@@ -120,7 +117,7 @@ class Game:
         self.snake = Snake()
         self.food = Food()
         self.bomb = Bomb()
-
+        
         self.generate_food()
         
         
@@ -137,7 +134,20 @@ class Game:
         self.snake.draw_snake()
         self.bomb.draw_bomb()
         
-        
+    def generate_bomb(self):
+        count = 0  
+        should_generate_bomb= True
+        while should_generate_bomb:
+            count += 1 
+            
+            if count > 10 :
+                should_generate_bomb = False
+            else:
+                
+                self.bomb = Bomb()
+
+
+
     
     def check_head_on_food(self):
         snake_length = len(self.snake.body)
@@ -145,6 +155,15 @@ class Game:
         food_block = self.food.block
         if snake_head_block.x == food_block.x and snake_head_block.y == food_block.y:
             self.generate_food()
+
+
+            enemies = []
+            maxenemies = 2
+            for i in range(maxenemies):
+                enemies.append(Bomb())
+                print(enemies)
+
+
             global score 
             score += 10 
         else:
@@ -165,9 +184,8 @@ class Game:
             else:
                 self.food = Food()
                 
-               
-
-
+             
+    
 
 
     def game_over(self):
@@ -237,7 +255,6 @@ def show_grid():
 
 
 
-
 game_on = True
 
 
@@ -269,12 +286,16 @@ while game_on:
                     game.snake.direction ="RIGHT"
 
 
+                        
+                    
+    
 
 
 
 
     text1 = "score : " + str(score)
-    screen.fill((110,11,11))
+    screen.blit(bg, (0, 0))
+    #screen.fill((110,11,11))
     show_grid()
     game.draw_game_element()
     font = pygame.font.Font(None, 40)
