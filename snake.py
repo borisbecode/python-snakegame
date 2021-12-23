@@ -1,10 +1,10 @@
 import pygame
 import sys
 import random
-import time
 import threading
 from threading import * 
 from random import randint 
+import copy
 
 
 
@@ -76,6 +76,7 @@ class Snake:
 
         if self.direction =="RIGHT":
             new_head = Block( old_head.x+1 , old_head.y)
+            
             self.body.append(new_head)
             
         
@@ -155,13 +156,9 @@ class Game:
         food_block = self.food.block
         if snake_head_block.x == food_block.x and snake_head_block.y == food_block.y:
             self.generate_food()
+            self.generate_bomb()
+            
 
-
-            enemies = []
-            maxenemies = 2
-            for i in range(maxenemies):
-                enemies.append(Bomb())
-                print(enemies)
 
 
             global score 
